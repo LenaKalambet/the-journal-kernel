@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>the-journal-kernel test</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+
+    <script type="module" src="../dialogs/jk-edit-post-dialog.js"></script>
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <jk-edit-post-dialog></jk-add-new-post-dialog>
+      </template>
+    </test-fixture>
+
+    <script type="module">
+      suite('the-edit-post-dialog', () => {
+
+        test('edit new post event fires', (done) => {
+          const element = fixture('BasicTestFixture');
+          element.post = {
+            postId: '1', 
+            text: 'Unit test edit',
+            isPublic: true
+          };
+          element.name = 'OlenaB';
+          element.editUserPost = function(){}; 
+          element.addEventListener('post-updated', function(event) {
+            done();
+          });
+          element._submitEditPostTapped();
+        });
+      });
+    </script>
+
+  </body>
+</html>
