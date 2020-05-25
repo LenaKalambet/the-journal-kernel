@@ -1,5 +1,6 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+//TODO: imports should be in order defined in the styleguide.
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons/iron-icons';
 

@@ -1,5 +1,5 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-card/paper-card';
 import '../elements/jk-post';
 
@@ -49,10 +49,10 @@ class JkUsers extends JkApiMockMixin(PolymerElement) {
 
       </style>
       
-      <!--put your html code here!-->
       <div class="my-posts-container">
         <template is="dom-repeat" 
                   items="[[users]]">
+                  <!-- TODO: you can move it to a separate compoent jk-user -->
           <paper-card class="card" 
                       user="[[item]]">
             <div class="card-container">
@@ -69,28 +69,35 @@ class JkUsers extends JkApiMockMixin(PolymerElement) {
 
   static get properties() {
     return {
-     
+
       //array of objects (userName, position, postsAmount)
       users: {
-          type: Array,
+        type: Array,
       }
     };
   }
 
-//once connectionCallback fires app fill in the users Array of Objects and call getPostsAmmount
+  //once connectionCallback fires app fill in the users Array of Objects and call getPostsAmmount
   connectedCallback() {
     super.connectedCallback();
     this.users = this.getUsers(); //user is now Array of Objects (userName, position)
     this.getPostsAmount(); //This call adds postAmount to users
   }
 
-//This functiona add to users Array of Objects attribute postAmount making users Array of Objects (userName, position, postsAmount)
-  getPostsAmount(){
+  //This functiona add to users Array of Objects attribute postAmount making users Array of Objects (userName, position, postsAmount)
+  //TODO: this functionality can be in the handler of our FLUX alike architecture.
+  getPostsAmount() {
+    // TODO: you can also write this way
+    /*
+      for (let user of this.getUsers()) {
+        user.postsAmount = this.getPostsByName(user).length;        
+      }
+    */
     this.users = this.getUsers();
     for (var i = 0; i < this.users.length; i++) {
       this.users[i].postsAmount = this.getPostsByName(this.users[i].userName).length;
-    }   
+    }
   }
 }
-  
+
 window.customElements.define('jk-users', JkUsers);

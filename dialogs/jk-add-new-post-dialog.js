@@ -1,5 +1,5 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
@@ -68,12 +68,14 @@ class JkAddNewPostDialog extends JkApiMockMixin(PolymerElement) {
      
     `;
   }
+  //TODO: comments
   static get properties() {
     return {
 
       postText: {
         type: String,
         notify: true,
+        // TODO: maybe it's a good idea to move this to a separte variable.
         value: 'My new post text goes here',
       },
 
@@ -90,23 +92,24 @@ class JkAddNewPostDialog extends JkApiMockMixin(PolymerElement) {
     };
   }
 
-  openAddPostDialog(){
+  openAddPostDialog() {
     this.$.actions.open();
   }
 
-
-  _submitNewPostTapped(){
+  _submitNewPostTapped() {
     var post = {
-        userName: this.name,
-        text: this.postText,
-        addedDateTime: new Date().toLocaleString(),
-        isPublic: this.isPublic
+      userName: this.name,
+      text: this.postText,
+      addedDateTime: new Date().toLocaleString(),
+      isPublic: this.isPublic
     };
     this.addNewPost(post);
     this.dispatchEvent(new CustomEvent('new-post-added'));
+    // TODO: reset the this.postText value. Because it remains the same after adding the new post.
   }
 
-  _cancelButtonTapped(){
+  // TODO: delete this method
+  _cancelButtonTapped() {
 
   }
 }

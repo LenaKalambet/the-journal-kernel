@@ -1,7 +1,9 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '../elements/jk-post';
 
+//TODO: think how this component looks the same as jk-my-posts.js
+//You can get data in jk-langidng-page and pass it as post to the same component.
 class JkPublicPosts extends JkApiMockMixin(PolymerElement) {
   static get template() {
     return html`
@@ -44,7 +46,7 @@ class JkPublicPosts extends JkApiMockMixin(PolymerElement) {
     this.updatePublicPostsArray();
   }
 
-  updatePublicPostsArray(){
+  updatePublicPostsArray() {
     this.posts = this.getPublicPosts();
   }
 }

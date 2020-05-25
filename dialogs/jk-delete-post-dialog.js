@@ -1,5 +1,5 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
@@ -66,25 +66,27 @@ class JkDeletePostDialog extends JkApiMockMixin(PolymerElement) {
     return {
 
       post: {
-          type: Object,
-          notify: true,
+        type: Object,
+        notify: true,
       },
     };
   }
 
-  openDeletePostDialog(){
+  openDeletePostDialog() {
     this.$.deletePostDialog.open();
     console.log(this.post);
   }
 
-  _submitDeletePostTapped(post){
+  //TODO: delete the unused param.
+  _submitDeletePostTapped(post) {
     //mixin to localstorage
     this.deleteUserPost(this.post);
     //event to parent
     this.dispatchEvent(new CustomEvent('post-deleted'));
   }
 
-  _cancelButtonTapped(){
+  // TODO: delete this method.
+  _cancelButtonTapped() {
 
   }
 }

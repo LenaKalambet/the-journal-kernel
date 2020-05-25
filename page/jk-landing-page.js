@@ -1,5 +1,5 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/app-layout/app-layout';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-fab/paper-fab';
@@ -13,8 +13,12 @@ import '../dialogs/jk-add-new-post-dialog';
 import '../elements/jk-user-icon';
 import '../elements/jk-navigation-menu';
 
+//TODO explude the /build folder from the repo. Add it to the gitignore.
+
 /**
  * `the-journal-kernel`
+ * TODO: fix this comment. 
+ * I think it's a good idea to reread the polymer style guide and update the project according to it.
  * thi
  *
  * @customElement
@@ -31,6 +35,8 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
           --app-drawer-width: 300px;
         }
         
+        /* TODO: add a space between '-btn' and '{'. The same goes for every style tag in the project.
+         */
         .new-post-btn{
           position: fixed;
           bottom: 50px;
@@ -51,6 +57,7 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
           padding-left: 25px;
         }
 
+        /* TODO: you can make subtitle uppercase with a css rule. https://www.w3schools.com/cssref/tryit.asp?filename=trycss_text-transform */
         .sub-title{
           background-color: #003366;
           height: 30px;
@@ -92,6 +99,7 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
 
       </style>
         <div>
+          <!-- TODO: delete the commented code from the project. git is good for saving the history. There is no reason to keep the commented code in the project -->
           <!--<template is="dom-if" 
                     if="[[isUserLoggedIn]]">-->
             <app-drawer-layout>
@@ -160,17 +168,27 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
     `;
   }
 
+  // TODO: add comments to the props. We have a sample of how to comment props the styleguide for Polymer.
   static get properties() {
     return {
-     
+
+      //TODO: rename to `usersName`
       name: {
         type: String
       },
 
+      // TODO: at first I thought this is a position like left or right :)
+      // The naming is important or maybe a comment could clearify the meaning.
+      // In any case I think you could rename it to usersRole or someting like at. 
       position: {
         type: String,
       },
 
+      // TODO: `selectedNaviationItem` would be a better name IHMO.
+      // But, according to the https://www.webcomponents.org/element/@polymer/iron-pages/demo/demo/index.html
+      // you can use not only a number, but a string. For example, `page-name="my posts"`.
+      // So you can make it `selectedPageName` with a string value one of ['my posts', 'public posts', 'users].
+      // Still not sure about the space in `my posts`. Maybe `my-posts` would be better.
       navigationItemSelected: {
         type: Number,
         value: 0,
@@ -178,8 +196,8 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
       },
 
       navigationItemName: {
-          type: String,
-          computed: '_defineNavigationItemName(navigationItemSelected)',
+        type: String,
+        computed: '_defineNavigationItemName(navigationItemSelected)',
       },
 
       isUserLoggedIn: {
@@ -187,31 +205,37 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
       }
     };
   }
-    /**
-     * Call function to add users to Loacl Stroage.
-     * Checks if user is Valid and sends event about user log in.
-     * Save user info to properties.
-     */
+
+  // TODO: it's ok for this task to call an API from component.
+  // But we use a FLUX liked pattern to work with data.
+  /**
+   * Call function to add users to Loacl Stroage.
+   * Checks if user is Valid and sends event about user log in.
+   * Save user info to properties.
+   */
   connectedCallback() {
     super.connectedCallback();
     //mixin fills in localstorage with valid creds
     this.pushValidUsersToLocalstorage();
     if (!this.checkUserIsLogged()) {
       this.dispatchEvent(new CustomEvent('user-logged-out'));
-    } 
-      this.userLoggedIn();
-      this.refreshViews();
+    }
+    this.userLoggedIn();
+    this.refreshViews();
   }
   /**
    * Open Add Post dialog.
    */
-  _addNewPostTapped(){
+  _addNewPostTapped() {
     this.$.addNewPostDialog.openAddPostDialog();
   }
+
   /**
    * Refreshes data for My Posts, Public Posts, Users views.
    */
-  refreshViews(){
+  //TODO: if this method is not called outside of the component - make it private by using _.
+  //Techically it's not private, but by the naming it means it's private :)
+  refreshViews() {
     this.$.myPosts.updatePostsArray();
     this.$.publicPosts.updatePublicPostsArray();
     this.$.users.getPostsAmount();
@@ -221,44 +245,58 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
    */
   userLoggedIn() {
     //mixin to get data from sessionstorage
-    if (this.checkUserIsLogged()){
+
+    //TODO: it's more better to make a fast exit in the method.
+    //For example:
+    /*
+    if (!this.checkUserIsLogged()) {
+      return;
+    }
     var user = this.getloggedInUser();
     this.name = user.userName;
     this.position = user.position;
     this.isUserLoggedIn = this.checkUserIsLogged();
+
+    */
+    if (this.checkUserIsLogged()) {
+      var user = this.getloggedInUser();
+      this.name = user.userName;
+      this.position = user.position;
+      this.isUserLoggedIn = this.checkUserIsLogged();
     }
   }
 
   /**
    * Navigates to My Posts view.
    */
-  _openMyPosts(){
-    this.navigationItemSelected=0;
+  _openMyPosts() {
+    this.navigationItemSelected = 0;
   }
 
   /**
    * Navigates to Public Posts view.
    */
-  _openPublicPosts(){
-    this.navigationItemSelected=1;
+  _openPublicPosts() {
+    this.navigationItemSelected = 1;
   }
 
   /**
    * Navigates to Users view.
    */
-  _openUsers(){
-    this.navigationItemSelected=2;
+  _openUsers() {
+    this.navigationItemSelected = 2;
   }
 
+  //TODO: you can rename it to `_computeNavigationItemName`.
   /**
    * Compute page sub-title depending on page number.
    * 
    * @param {Number} navigationItemSelected Number of Navigation view.
    * @returns {String} Page Name.
    */
-  _defineNavigationItemName(navigationItemSelected){ 
+  _defineNavigationItemName(navigationItemSelected) {
     var navigationItemName;
-    switch(navigationItemSelected) {
+    switch (navigationItemSelected) {
       case 0:
         navigationItemName = 'MY POSTS';
         break;
@@ -267,7 +305,7 @@ class JkLandingPage extends JkApiMockMixin(PolymerElement) {
         break;
       case 2:
         navigationItemName = 'USERS';
-        break;    
+        break;
     }
     return navigationItemName;
   }

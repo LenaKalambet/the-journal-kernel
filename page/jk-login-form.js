@@ -1,5 +1,5 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-dialog';
@@ -9,6 +9,7 @@ class JkLoginForm extends JkApiMockMixin(PolymerElement) {
   static get template() {
     return html`
       <style>
+        /* TODO: delete this empty style */
         :host {
         }
     
@@ -58,6 +59,7 @@ class JkLoginForm extends JkApiMockMixin(PolymerElement) {
 
     `;
   }
+  //TODO: add comments.
   static get properties() {
     return {
       userName: {
@@ -66,8 +68,8 @@ class JkLoginForm extends JkApiMockMixin(PolymerElement) {
       },
 
       password: {
-        type: String, 
-        notify: true,        
+        type: String,
+        notify: true,
       },
     };
   }
@@ -80,12 +82,12 @@ class JkLoginForm extends JkApiMockMixin(PolymerElement) {
   /**
    * Verifies User credentials or throught toast message
    */
-  _submitLoginTapped(){
+  _submitLoginTapped() {
     var user = {
       userName: this.userName,
       password: this.password
     }
-    if (this.userIsValid(user)){
+    if (this.userIsValid(user)) {
       //save user name to localstorage and send event
       this.userLogIn(user);
       this.dispatchEvent(new CustomEvent('user-logged-in'));

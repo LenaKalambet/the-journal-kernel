@@ -1,8 +1,8 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-toast/paper-toast';
 
 class JkEditPostDialog extends JkApiMockMixin(PolymerElement) {
@@ -83,7 +83,7 @@ class JkEditPostDialog extends JkApiMockMixin(PolymerElement) {
     };
   }
 
-  openEditPostDialog(){
+  openEditPostDialog() {
     var user = this.getloggedInUser();
     this.name = user.userName;
     if (this.post.userName == this.name) {
@@ -93,7 +93,19 @@ class JkEditPostDialog extends JkApiMockMixin(PolymerElement) {
     }
   }
 
-  _submitEditPostTapped(){
+  _submitEditPostTapped() {
+    //TODO: you also can use destructuring. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+    /*
+      const {postId, text, isPublic} = this.post;
+      const newPost = {
+        postId,
+        text,
+        isPublic,
+        userName: this.name,
+        addedDateTime: new Date().toLocaleString()
+      };
+    */
+    // Also use let and const instead of var;
     var newPost = {
       postId: this.post.postId,
       userName: this.name,
@@ -107,7 +119,8 @@ class JkEditPostDialog extends JkApiMockMixin(PolymerElement) {
     this.dispatchEvent(new CustomEvent('post-updated'));
   }
 
-  _cancelButtonTapped(){
+  // TODO: delete unsuded method.
+  _cancelButtonTapped() {
 
   }
 }

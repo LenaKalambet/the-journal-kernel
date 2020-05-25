@@ -1,4 +1,4 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
 import '@polymer/paper-item/paper-item';
 import '@polymer/iron-icons/communication-icons';
 import '@polymer/iron-icons/social-icons';
@@ -31,6 +31,8 @@ class JkNavigationMenu extends PolymerElement {
       </a>
     `;
   }
+
+  //TODO: add comments
   static get properties() {
     return {
 
@@ -45,7 +47,7 @@ class JkNavigationMenu extends PolymerElement {
       navitem: {
         type: String
       },
-      
+
     };
   }
 }

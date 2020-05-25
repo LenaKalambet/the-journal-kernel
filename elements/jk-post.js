@@ -1,5 +1,5 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element';
-import {JkApiMockMixin} from '../jk-api-mock-mixin';
+import { html, PolymerElement } from '@polymer/polymer/polymer-element';
+import { JkApiMockMixin } from '../jk-api-mock-mixin';
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons/iron-icons';
@@ -109,23 +109,24 @@ class JkPost extends JkApiMockMixin(PolymerElement) {
     `;
   }
   static get properties() {
+    //TODO: comments :)
     return {
 
-      post:{
+      post: {
         type: Object,
       }
     };
   }
 
-  _editPostTapped(){
+  _editPostTapped() {
     this.$.editPostDialog.openEditPostDialog();
   }
 
-  _deletePostTapped(){
+  _deletePostTapped() {
     this.$.deletePostDialog.openDeletePostDialog();
   }
 
-  _postsUpdated(){
+  _postsUpdated() {
     this.dispatchEvent(new CustomEvent('post-updated'));
   }
 }
