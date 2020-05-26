@@ -108,10 +108,6 @@ class JkAddNewPostDialog extends JkApiMockMixin(PolymerElement) {
     // TODO: reset the this.postText value. Because it remains the same after adding the new post.
   }
 
-  // TODO: delete this method
-  _cancelButtonTapped() {
-
-  }
 }
 
 window.customElements.define('jk-add-new-post-dialog', JkAddNewPostDialog);

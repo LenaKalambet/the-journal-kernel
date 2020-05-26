@@ -4,41 +4,40 @@ import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 let jkApiMockMixin = (base) => class extends base {
 
   /**
+   * Get data from Local Storage by key or return default value if no data.
+   * 
+   * @param {String} key key to Localstorage.
+   * @param {*} defaultValue some value to return when Localstorage is blank.
+   * @returns {*} Data from Local Storagefound by key.
+   */
+  getFromLocalStorageOrReturnDefaultValue(key, defaultValue) {
+    const item = localStorage.getItem(key);
+    if (item === null) {
+        return defaultValue;
+    }
+    return JSON.parse(item);
+  }
+
+  /**
+   * Send data to localstorage.
+   * 
+   * @param {String} key key for sending to Locl Storage.
+   * @param {} item Data for sending to Local Storage.
+   */
+  setIntoLocalStorage(key, item) {
+    localStorage.setItem(key, JSON.stringify(item));
+  }
+
+  /**
    * Add new post to Local Strage.
    * 
    * @param {Object} post Post details.
    */
   addNewPost(post) {
     post.postId = this._generateUUID();
-    // TODO create a method 
-    /* getFromLocalStorageOrReturnDefault(key, default) {
-        const item = localStorage.getItem(key);
-        if (item === null) {
-            return default;
-        }
-        
-        return JSON.stringify(item);
-    }
-
-    You can use it in getAllPosts too.
-    */
-    var postsArr = [];
-    var serializedPostsArray = localStorage.getItem("allPostsKey");
-    if (serializedPostsArray != null) {
-      postsArr = JSON.parse(serializedPostsArray);
-    }
+    var postsArr = this.getFromLocalStorageOrReturnDefaultValue('allPostsKey', [])    
     postsArr.push(post);
-
-    /*
-      TODO: create a method
-      setIntoLocalStorage(key, item) {
-        localStorage.setItem(key, JSON.stringify(item));
-      }
-
-      You can use it in other places in this file too :)
-    */
-    serializedPostsArray = JSON.stringify(postsArr);
-    localStorage.setItem("allPostsKey", serializedPostsArray);
+    this.setIntoLocalStorage('allPostsKey', postsArr);
   }
 
   /**
@@ -47,13 +46,7 @@ let jkApiMockMixin = (base) => class extends base {
    * @returns {Array} All posts.
    */
   getAllPosts() {
-    // TODO: use getFromLocalStorageOrReturnDefault("allPostsKey", []);
-    var postsArr = [];
-    var serializedPostsArray = localStorage.getItem("allPostsKey");
-    if (serializedPostsArray != null) {
-      postsArr = JSON.parse(serializedPostsArray);
-    }
-    return postsArr;
+    return this.getFromLocalStorageOrReturnDefaultValue('allPostsKey', []);
   }
 
   /**
@@ -62,19 +55,7 @@ let jkApiMockMixin = (base) => class extends base {
    * @returns {Array} Public posts.
    */
   getPublicPosts() {
-    /*
-      TODO: also can be written.
-      return this.getAllPosts().filter(p => p.isPublic);
-    */
-    var allPosts = this.getAllPosts();
-    var posts = [];
-    for (var i = 0; i < allPosts.length; i++) {
-      // TODO: no need to check a boolean value with true or false.
-      if (allPosts[i].isPublic == true) {
-        posts.push(allPosts[i])
-      }
-    }
-    return posts;
+    return this.getAllPosts().filter(p => p.isPublic);
   }
 
   /**
@@ -84,18 +65,7 @@ let jkApiMockMixin = (base) => class extends base {
    * @returns {Array} User's posts.
    */
   getPostsByName(userName) {
-    /*
-    TODO:
-      return this.getAllPosts().filter(p => p.userName === userName);
-    */
-    var allPosts = this.getAllPosts();
-    var posts = [];
-    for (var i = 0; i < allPosts.length; i++) {
-      if (allPosts[i].userName == userName) {
-        posts.push(allPosts[i])
-      }
-    }
-    return posts;
+    return this.getAllPosts().filter(p => p.userName === userName);
   }
 
   /**
@@ -104,18 +74,14 @@ let jkApiMockMixin = (base) => class extends base {
    * @param {Object} post Object with post details.
    */
   editUserPost(post) {
-    // TODO: use getFromLocalStorageOrReturnDefault("allPostsKey", []);
-    var postsArr = JSON.parse(localStorage.getItem("allPostsKey"));
+    var postsArr = this.getAllPosts();
     //look for object with the same postId
     var wantedPost = postsArr.find(x => x.postId === post.postId)
     // update it
     wantedPost.text = post.text;
     wantedPost.addedDateTime = post.addedDateTime;
     wantedPost.isPublic = post.isPublic;
-
-    // TODO: call setIntoLocalStorage("allPostsKey", postsArr);
-    var serializedPostsArray = JSON.stringify(postsArr);
-    localStorage.setItem("allPostsKey", serializedPostsArray);
+    this.setIntoLocalStorage("allPostsKey", postsArr);
   };
 
   /**
@@ -139,12 +105,7 @@ let jkApiMockMixin = (base) => class extends base {
    * @returns {{userName: String, password: String, position: String}} User details.
    */
   getUsers() {
-    var usersArr = [];
-    var serializedUsersArray = localStorage.getItem("allUsersKey");
-    if (serializedUsersArray != null) {
-      usersArr = JSON.parse(serializedUsersArray);
-    }
-    return usersArr;
+    return this.getFromLocalStorageOrReturnDefaultValue('allUsersKey', [])
   }
 
   /**
@@ -163,17 +124,8 @@ let jkApiMockMixin = (base) => class extends base {
     */
     var usersArray = this.getUsers();
     var isUserValid;
-    var user = usersArray.find(x => x.userName === user.userName);
-    if (user != null) {
-      if (usersArray.find(x => x.userName === user.userName).password == user.password) {
-        isUserValid = true;
-      } else
-        isUserValid = false;
-    }
-    else {
-      isUserValid = false;
-    };
-    return isUserValid;
+    var user = usersArray.find(x => x.userName === user.userName && x.password === user.password);
+    return !!user;
   }
 
   /**
@@ -200,11 +152,7 @@ let jkApiMockMixin = (base) => class extends base {
    * @return {Boolean} Is user logged.
    */
   checkUserIsLogged() {
-    if (sessionStorage.getItem('myUser') != null)
-      return true;
-    /* TODO: simplify
-    return sessionStorage.getItem('myUser') !== null;
-    */
+    return sessionStorage.getItem('myUser') != null;
   }
 
   /**
@@ -215,9 +163,7 @@ let jkApiMockMixin = (base) => class extends base {
   getloggedInUser() {
     var usersArray = this.getUsers();
     var myUserUserName = sessionStorage.getItem('myUser');
-    // TODO: if (myUserUserName !== null)
-    // Because looks like you query the same value twice from the sessionStorage.
-    if (this.checkUserIsLogged()) {
+    if (myUserUserName !== null) {
       var user = {
         userName: myUserUserName,
         position: usersArray.find(x => x.userName === myUserUserName).position,
